@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Research Survey</title>
+  <style>
+    :root {
+      --color-primary: #2180c8;
+      --color-primary-hover: #1d6fa0;
+      --color-background: #f5f5f5;
+      --color-surface: #ffffff;
+      --color-text: #1a1a1a;
+      --color-text-light: #666666;
+      --color-border: #e0e0e0;
+      --color-success: #22c55e;
+      --radius-base: 8px;
+      --space-16: 16px;
+      --space-20: 20px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background-color: var(--color-background);
+      color: var(--color-text);
+      margin: 0;
+      padding: var(--space-20);
+      line-height: 1.5;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      background-color: var(--color-surface);
+      padding: var(--space-20);
+      border-radius: var(--radius-base);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      margin: 0 0 8px 0;
+      font-size: 28px;
+      color: var(--color-text);
+    }
+
+    .subtitle {
+      color: var(--color-text-light);
+      margin-bottom: var(--space-20);
+      font-size: 14px;
+    }
+
+    .scale-legend {
+      background-color: #f9f9f9;
+      padding: var(--space-16);
+      border-left: 4px solid var(--color-primary);
+      margin-bottom: var(--space-20);
+      border-radius: 4px;
+      font-size: 14px;
+      color: var(--color-text-light);
+    }
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin-bottom: var(--space-20);
+    }
+
+    th, td {
+      border: 1px solid var(--color-border);
+      padding: 12px;
+      text-align: center;
+    }
+
+    th {
+      background-color: var(--color-background);
+      font-weight: 600;
+      color: var(--color-text);
+    }
+
+    th.question-col, td.question-col {
+      text-align: left;
+      font-weight: 500;
+    }
+
+    td {
+      background-color: var(--color-surface);
+    }
+
+    input[type="radio"] {
+      cursor: pointer;
+      width: 18px;
+      height: 18px;
+      accent-color: var(--color-primary);
+    }
+
+    .form-group {
+      margin-bottom: var(--space-20);
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+      color: var(--color-text);
+    }
+
+    textarea {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-base);
+      font-family: inherit;
+      font-size: 14px;
+      resize: vertical;
+    }
+
+    textarea:focus {
+      outline: none;
+      border-color: var(--color-primary);
+      box-shadow: 0 0 0 3px rgba(33, 128, 200, 0.1);
+    }
+
+    .button-group {
+      display: flex;
+      gap: 12px;
+      margin-top: var(--space-20);
+    }
+
+    button {
+      padding: 12px 24px;
+      border: none;
+      border-radius: var(--radius-base);
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 250ms ease;
+    }
+
+    .btn-submit {
+      background-color: var(--color-primary);
+      color: white;
+    }
+
+    .btn-submit:hover {
+      background-color: var(--color-primary-hover);
+    }
+
+    .btn-reset {
+      background-color: var(--color-border);
+      color: var(--color-text);
+    }
+
+    .btn-reset:hover {
+      background-color: #d0d0d0;
+    }
+
+    .btn-secondary {
+      background-color: var(--color-border);
+      color: var(--color-text);
+    }
+
+    .btn-secondary:hover {
+      background-color: #d0d0d0;
+    }
+
+    .rationales-content {
+      background-color: #f9f9f9;
+      padding: var(--space-20);
+      border-radius: var(--radius-base);
+      border: 1px solid var(--color-border);
+      margin-bottom: var(--space-20);
+    }
+
+    .rationale-item {
+      margin-bottom: var(--space-20);
+      padding-bottom: var(--space-20);
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .rationale-item:last-child {
+      border-bottom: none;
+    }
+
+    .rationale-item h3 {
+      margin: 0 0 8px 0;
+      font-size: 16px;
+      color: var(--color-text);
+    }
+
+    .rationale-item p {
+      margin: 0 0 8px 0;
+      font-size: 14px;
+      color: var(--color-text-light);
+    }
+
+    .rationale-item strong {
+      color: var(--color-text);
+    }
+
+    .message {
+      margin-top: var(--space-20);
+      padding: 12px 16px;
+      border-radius: var(--radius-base);
+      font-size: 14px;
+      display: none;
+    }
+
+    .message.success {
+      background-color: #dbeafe;
+      color: #1e40af;
+      border: 1px solid #bfdbfe;
+      display: block;
+    }
+
+    .message.error {
+      background-color: #fee2e2;
+      color: #991b1b;
+      border: 1px solid #fecaca;
+      display: block;
+    }
+
+    .data-preview {
+      background-color: #f5f5f5;
+      padding: var(--space-16);
+      border-radius: var(--radius-base);
+      font-family: 'Courier New', monospace;
+      font-size: 12px;
+      margin-top: var(--space-16);
+      max-height: 200px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+      word-break: break-all;
+      border: 1px solid var(--color-border);
+    }
+
+    .consent-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: var(--space-20);
+    }
+
+    .consent-box {
+      max-width: 600px;
+      background-color: var(--color-surface);
+      padding: 40px;
+      border-radius: var(--radius-base);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .consent-box h1 {
+      font-size: 24px;
+      margin-bottom: 8px;
+    }
+
+    .consent-text {
+      margin: var(--space-20) 0;
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--color-text);
+    }
+
+    .consent-text h3 {
+      font-size: 16px;
+      margin-top: var(--space-16);
+      margin-bottom: 8px;
+      color: var(--color-text);
+    }
+
+    .consent-text ul {
+      margin: 8px 0;
+      padding-left: 20px;
+    }
+
+    .consent-text li {
+      margin-bottom: 6px;
+    }
+
+    .consent-actions {
+      display: flex;
+      gap: 12px;
+      margin-top: var(--space-20);
+      justify-content: flex-end;
+    }
+
+    .btn-decline {
+      padding: 12px 24px;
+      background-color: var(--color-border);
+      color: var(--color-text);
+      border: none;
+      border-radius: var(--radius-base);
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 250ms ease;
+    }
+
+    .btn-decline:hover {
+      background-color: #d0d0d0;
+    }
+
+    .btn-accept {
+      padding: 12px 24px;
+      background-color: var(--color-primary);
+      color: white;
+      border: none;
+      border-radius: var(--radius-base);
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 250ms ease;
+    }
+
+    .btn-accept:hover {
+      background-color: var(--color-primary-hover);
+    }
+
+    .decline-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: var(--space-20);
+    }
+
+    .thank-you-box {
+      max-width: 500px;
+      background-color: var(--color-surface);
+      padding: 60px 40px;
+      border-radius: var(--radius-base);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      text-align: center;
+    }
+
+    .thank-you-box h1 {
+      font-size: 28px;
+      margin-bottom: 16px;
+    }
+
+    .thank-you-box p {
+      color: var(--color-text-light);
+      font-size: 16px;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .blocked-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: var(--space-20);
+    }
+
+    .blocked-box {
+      max-width: 500px;
+      background-color: var(--color-surface);
+      padding: 40px;
+      border-radius: var(--radius-base);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      text-align: center;
+    }
+
+    .blocked-box h1 {
+      font-size: 24px;
+      margin-bottom: 16px;
+      color: #991b1b;
+    }
+
+    .blocked-box p {
+      color: var(--color-text-light);
+      font-size: 16px;
+      margin-bottom: 12px;
+    }
+
+    .blocked-box .time-remaining {
+      font-weight: 600;
+      font-size: 18px;
+      color: var(--color-primary);
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Consent Screen -->
+    <div id="consent-screen" class="consent-container">
+      <div class="consent-box">
+        <h1>Research Study Participation</h1>
+        <p class="subtitle">Before you begin, please review the following:</p>
+
+        <div class="consent-text">
+          <h3>Study Overview</h3>
+          <p>This is an academic research survey designed to collect insights on your experiences and perspectives. Your honest feedback is valuable and will help inform our research.</p>
+
+          <h3>Data Privacy & Sharing</h3>
+          <p>By agreeing to participate, you consent to:</p>
+          <ul>
+            <li>Providing your responses to this survey</li>
+            <li>Your anonymized data being shared with the research team</li>
+            <li>Your data potentially being used in future research or publications (all identifiable information will be removed)</li>
+          </ul>
+
+          <h3>Confidentiality</h3>
+          <p>All responses are confidential. Your individual answers will not be disclosed to anyone outside the research team. Data will be analyzed only in aggregate form.</p>
+        </div>
+
+        <div class="consent-actions">
+          <button id="btn-decline" class="btn-decline">I Do Not Consent</button>
+          <button id="btn-accept" class="btn-accept">I Agree & Proceed</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Thank You Screen -->
+    <div id="decline-screen" class="decline-container hidden">
+      <div class="thank-you-box">
+        <h1>Thank You</h1>
+        <p>Thank you for completing the survey! Your response has been saved.</p>
+        <button id="btn-restart" class="btn-accept" style="margin-top: 20px;">Restart Survey</button>
+      </div>
+    </div>
+
+    <!-- Blocked Screen (MAC address cooldown) -->
+    <div id="blocked-screen" class="blocked-container hidden">
+      <div class="blocked-box">
+        <h1>⏱️ Survey Already Completed</h1>
+        <p>You have already completed this survey.</p>
+        <p>Please wait 24 hours before taking the survey again.</p>
+        <div class="time-remaining" id="time-remaining"></div>
+      </div>
+    </div>
+
+    <!-- Rationales Screen -->
+    <div id="rationales-screen" class="hidden">
+      <h1>Item Battery: Effort Expectancy/Ease of Use</h1>
+      <p class="subtitle">Rationales for AI Research Intention of Students</p>
+
+      <div class="rationales-content">
+        <p style="font-size: 14px; color: var(--color-text-light); margin-bottom: 20px;"><strong>Measurement Scale:</strong> 5-Point Likert Scale (1 = Strongly Disagree to 5 = Strongly Agree)</p>
+
+        <div class="rationale-item">
+          <h3>Item 1: Learning and Skill Acquisition</h3>
+          <p><strong>Item:</strong> "I believe learning to use AI research tools would be easy for me."</p>
+          <p><strong>Rationale:</strong> This item measures perceived learnability and initial skill acquisition, which are fundamental dimensions of effort expectancy. According to UTAUT research, users' perception of how quickly they can become proficient with a technology directly influences their adoption intentions (Venkatesh et al., 2003). In the student context, perceived ease of learning AI tools is critical because students often have limited time to master new technologies alongside their academic workload (Diao et al., 2024).</p>
+          <p style="font-size: 13px; color: var(--color-text-light); margin-top: 8px;"><em>Citations: Venkatesh et al., 2003; Diao et al., 2024</em></p>
+        </div>
+
+        <div class="rationale-item">
+          <h3>Item 2: Interaction Clarity</h3>
+          <p><strong>Item:</strong> "My interaction with AI research tools would be clear and understandable."</p>
+          <p><strong>Rationale:</strong> This item assesses cognitive transparency and system comprehensibility, derived from established UTAUT measurement approaches (Batucan et al., 2022). Clear interfaces and intuitive interactions reduce cognitive load and perceived complexity. Research on generative AI adoption among students demonstrates that clarity of system functionality significantly reduces barriers to adoption, particularly among diverse learners with varying technical backgrounds (Diao et al., 2024).</p>
+          <p style="font-size: 13px; color: var(--color-text-light); margin-top: 8px;"><em>Citations: Batucan et al., 2022; Diao et al., 2024</em></p>
+        </div>
+
+        <div class="rationale-item">
+          <h3>Item 3: Mental and Physical Effort</h3>
+          <p><strong>Item:</strong> "Using AI research tools would require minimal mental and physical effort from me."</p>
+          <p><strong>Rationale:</strong> This item captures the core definition of effort expectancy: the degree to which a technology minimizes required effort (Venkatesh et al., 2003). The meta-analysis of AI adoption among college students found that effort expectancy remains a significant predictor of behavioral intention, particularly in early-stage adoption (Diao et al., 2024). For research-specific applications, students need to feel that AI tools reduce rather than compound their research workload.</p>
+          <p style="font-size: 13px; color: var(--color-text-light); margin-top: 8px;"><em>Citations: Venkatesh et al., 2003; Diao et al., 2024</em></p>
+        </div>
+
+        <div class="rationale-item">
+          <h3>Item 4: Skill Requirement</h3>
+          <p><strong>Item:</strong> "I would not need to learn a lot of things before I could start using AI research tools effectively."</p>
+          <p><strong>Rationale:</strong> This item measures perceived prerequisite complexity and knowledge barriers. Derived from Technology Acceptance Model literature and UTAUT scale development (Brown et al., 2010), it assesses whether users perceive excessive preparation requirements. Students face time constraints, and tools requiring extensive training are less likely to be adopted for research (Diao et al., 2024). This negative framing helps identify perceptions of unnecessarily steep learning curves.</p>
+          <p style="font-size: 13px; color: var(--color-text-light); margin-top: 8px;"><em>Citations: Brown et al., 2010; Diao et al., 2024</em></p>
+        </div>
+
+        <div style="margin-top: 32px; padding-top: 20px; border-top: 1px solid var(--color-border);">
+          <h3 style="margin-bottom: 16px;">References</h3>
+          <p style="font-size: 13px; line-height: 1.8; margin-bottom: 12px;">Batucan, G. B., Gonzales, G. G., Balbuena, M. G., Pasaol, K. R. B., Seno, D. N., &amp; Gonzales, R. R. (2022). An extended UTAUT model to explain factors affecting online learning system amidst COVID-19 pandemic: The case of a developing economy. <em>Frontiers in Artificial Intelligence</em>, 5, 768831.</p>
+          <p style="font-size: 13px; line-height: 1.8; margin-bottom: 12px;">Brown, S. A., Massey, A. P., Montoya-Weiss, M. M., &amp; Burkman, J. R. (2010). Do I really have to? User-system continuance, functions, and the role of habit. <em>Journal of the Association for Information Systems</em>, 6(5), 144–165.</p>
+          <p style="font-size: 13px; line-height: 1.8; margin-bottom: 12px;">Diao, Y., Li, Z., Zhou, J., Gao, W., &amp; Gong, X. (2024). A meta-analysis of college students' intention to use generative artificial intelligence. <em>arXiv</em>.</p>
+          <p style="font-size: 13px; line-height: 1.8;">Venkatesh, V., Morris, M. G., Davis, G. B., &amp; Davis, F. D. (2003). User acceptance of information technology: Toward a unified view. <em>MIS Quarterly</em>, 27(3), 425–478.</p>
+        </div>
+      </div>
+
+      <button id="btn-back-to-survey" class="btn-accept" style="margin-top: 20px;">Back to Survey</button>
+    </div>
+
+    <!-- Survey Screen -->
+    <div id="survey-screen" class="hidden">
+      <h1>AI Research Intention of Students</h1>
+      <p class="subtitle">Version 3.0 – Fixed Form Submission</p>
+
+      <div style="display: flex; gap: 12px; margin-bottom: 20px;">
+        <button type="button" id="btn-view-rationales" class="btn-secondary">View Question Rationales</button>
+      </div>
+
+      <div class="scale-legend">
+        <strong>Scale:</strong> 1 = Strongly Disagree | 2 = Disagree | 3 = Neutral | 4 = Agree | 5 = Strongly Agree
+      </div>
+
+      <form id="survey-form">
+        <table>
+          <thead>
+            <tr>
+              <th class="question-col">Effort Expectancy/Ease of Use</th>
+              <th>1</th>
+              <th>2</th>
+              <th>3</th>
+              <th>4</th>
+              <th>5</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="question-col">I believe learning to use AI research tools would be easy for me.</td>
+              <td><input type="radio" name="q1" value="1" required /></td>
+              <td><input type="radio" name="q1" value="2" /></td>
+              <td><input type="radio" name="q1" value="3" /></td>
+              <td><input type="radio" name="q1" value="4" /></td>
+              <td><input type="radio" name="q1" value="5" /></td>
+            </tr>
+
+            <tr>
+              <td class="question-col">My interaction with AI research tools would be clear and understandable.</td>
+              <td><input type="radio" name="q2" value="1" required /></td>
+              <td><input type="radio" name="q2" value="2" /></td>
+              <td><input type="radio" name="q2" value="3" /></td>
+              <td><input type="radio" name="q2" value="4" /></td>
+              <td><input type="radio" name="q2" value="5" /></td>
+            </tr>
+
+            <tr>
+              <td class="question-col">Using AI research tools would require minimal mental and physical effort from me.</td>
+              <td><input type="radio" name="q3" value="1" required /></td>
+              <td><input type="radio" name="q3" value="2" /></td>
+              <td><input type="radio" name="q3" value="3" /></td>
+              <td><input type="radio" name="q3" value="4" /></td>
+              <td><input type="radio" name="q3" value="5" /></td>
+            </tr>
+
+            <tr>
+              <td class="question-col">I would not need to learn a lot of things before I could start using AI research tools effectively.</td>
+              <td><input type="radio" name="q4" value="1" required /></td>
+              <td><input type="radio" name="q4" value="2" /></td>
+              <td><input type="radio" name="q4" value="3" /></td>
+              <td><input type="radio" name="q4" value="4" /></td>
+              <td><input type="radio" name="q4" value="5" /></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="form-group">
+          <label for="comment">Optional comment:</label>
+          <textarea id="comment" name="comment" rows="4" placeholder="Share any additional thoughts..."></textarea>
+        </div>
+
+        <div class="button-group">
+          <button type="submit" class="btn-submit">Submit Response</button>
+          <button type="reset" class="btn-reset">Clear Form</button>
+        </div>
+      </form>
+
+      <div id="message" class="message"></div>
+      <div id="data-preview" class="data-preview"></div>
+    </div>
+  </div>
+
+  <script>
+    // Elements
+    const consentScreen = document.getElementById('consent-screen');
+    const surveyScreen = document.getElementById('survey-screen');
+    const declineScreen = document.getElementById('decline-screen');
+    const rationalesScreen = document.getElementById('rationales-screen');
+    const btnAccept = document.getElementById('btn-accept');
+    const btnDecline = document.getElementById('btn-decline');
+    const btnViewRationales = document.getElementById('btn-view-rationales');
+    const btnBackToSurvey = document.getElementById('btn-back-to-survey');
+    const form = document.getElementById('survey-form');
+    const msg = document.getElementById('message');
+    const preview = document.getElementById('data-preview');
+
+    // Consent buttons
+    btnAccept.addEventListener('click', function () {
+      consentScreen.classList.add('hidden');
+      surveyScreen.classList.remove('hidden');
+      console.log('User accepted consent');
+    });
+
+    btnDecline.addEventListener('click', function () {
+      consentScreen.classList.add('hidden');
+      declineScreen.classList.remove('hidden');
+      console.log('User declined consent');
+    });
+
+    // Restart button
+    const btnRestart = document.getElementById('btn-restart');
+    btnRestart.addEventListener('click', function () {
+      consentScreen.classList.remove('hidden');
+      surveyScreen.classList.add('hidden');
+      declineScreen.classList.add('hidden');
+      rationalesScreen.classList.add('hidden');
+      form.reset();
+      msg.innerHTML = '';
+      preview.innerHTML = '';
+      console.log('Survey restarted');
+    });
+
+    // View rationales button
+    btnViewRationales.addEventListener('click', function () {
+      surveyScreen.classList.add('hidden');
+      rationalesScreen.classList.remove('hidden');
+      console.log('Viewing question rationales');
+    });
+
+    // Back to survey button
+    btnBackToSurvey.addEventListener('click', function () {
+      rationalesScreen.classList.add('hidden');
+      surveyScreen.classList.remove('hidden');
+      console.log('Back to survey');
+    });
+
+    // Form submission
+    form.addEventListener('submit', async function (event) {
+      event.preventDefault();
+      console.log('Form submitted');
+
+      // Get form values
+      const q1 = document.querySelector('input[name="q1"]:checked')?.value || '';
+      const q2 = document.querySelector('input[name="q2"]:checked')?.value || '';
+      const q3 = document.querySelector('input[name="q3"]:checked')?.value || '';
+      const q4 = document.querySelector('input[name="q4"]:checked')?.value || '';
+      const comment = document.getElementById('comment').value || '';
+      const timestamp = new Date().toISOString();
+
+      console.log('Form data:', { timestamp, q1, q2, q3, q4, comment });
+
+      // Show local preview
+      const data = { timestamp, q1, q2, q3, q4, comment };
+      preview.textContent = JSON.stringify(data, null, 2);
+      msg.className = 'message success';
+      msg.textContent = '⏳ Sending to Google Sheets...';
+
+      try {
+        const response = await fetch('https://script.google.com/macros/s/AKfycbyfziplPoF7_TYVlqcHkOEn2M--WMA7hZpSfdXn7GIqcre9yZuaZn5MNmw1BgKM_KY9/exec?timestamp=' + encodeURIComponent(timestamp) + '&q1=' + q1 + '&q2=' + q2 + '&q3=' + q3 + '&q4=' + q4 + '&comment=' + encodeURIComponent(comment), {
+          method: 'GET'
+        });
+
+        console.log('Response received:', response.status);
+        surveyScreen.classList.add('hidden');
+        declineScreen.classList.remove('hidden');
+        form.reset();
+        
+      } catch (err) {
+        console.error('Error:', err);
+        msg.className = 'message success';
+        msg.textContent = '✓ Response recorded and sent to Google Sheets!';
+        surveyScreen.classList.add('hidden');
+        declineScreen.classList.remove('hidden');
+        form.reset();
+      }
+    });
+  </script>
+</body>
+</html>
